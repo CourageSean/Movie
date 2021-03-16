@@ -5,12 +5,15 @@ import data from "./ContactsData";
 import "./Contacts.css";
 
 class Contacts extends Component {
-  state = {
-    name: "",
-    contactData: data.slice(),
+  constructor() {
+    super();
+    this.state = {
+      name: "",
+      contactData: data.slice(),
 
-    popularity: "",
-  };
+      popularity: "",
+    };
+  }
 
   handleNameInput = (event) => {
     this.setState({ name: event.target.value });
@@ -57,13 +60,18 @@ class Contacts extends Component {
   compareRate = (a, b) => {
     return a.popularity - b.popularity;
   };
+
   handleSortName = () => {
-    if (this.state.contactData) {
-      this.setState({ contactData: this.state.contactData.sort(this.compare) });
+    let order = false;
+    const sortedName = this.state.contactData.sort(this.compare);
+    if (order) {
+      order = !order;
+      this.setState({ contactData: sortedName });
     } else {
       this.setState({
-        contactData: this.state.contactData.sort(this.compare).reverse(),
+        contactData: sortedName.reverse(),
       });
+      order = true;
     }
   };
 
@@ -75,26 +83,25 @@ class Contacts extends Component {
   render() {
     return (
       <div>
-        <form action="">
-          <input
-            type="text"
-            placeholder="First Name"
-            onChange={this.handleNameInput}
-          />
+        <input
+          type="text"
+          placeholder="First Name"
+          onChange={this.handleNameInput}
+        />
 
-          <input
-            type="text"
-            placeholder="Popularity Rate"
-            onChange={this.handlePopularityInput}
-          />
-          <input
-            type="submit"
-            value="Add Random Contact"
-            onClick={this.handleSubmit}
-          />
-          <button onClick={this.handleSortName}>Sort by name</button>
-          <button onClick={this.handleSortRate}>Sort by popularity</button>
-        </form>
+        <input
+          type="text"
+          placeholder="Popularity Rate"
+          onChange={this.handlePopularityInput}
+        />
+        <input
+          type="submit"
+          value="Add Random Contact"
+          onClick={this.handleSubmit}
+        />
+        <input type="submit" onClick={this.handleSortName} />
+        <button onClick={this.handleSortRate}>Sort by popularity</button>
+
         <div className="contacts-container">
           {this.state.contactData.map((elt, index) => (
             <ContactItem
@@ -102,7 +109,7 @@ class Contacts extends Component {
               imgUrl={elt.pictureUrl}
               popularity={elt.popularity}
               delete={() => {
-                return this.removeContact(index);
+                return this.removeContact();
               }}
             />
           ))}
