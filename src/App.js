@@ -1,11 +1,10 @@
 import "./App.css";
 import React, { Component } from "react";
-import movies from "./MovieDataBase";
-import MovieData from "./MovieData";
+import movies from "./components/MovieDataBase";
+import MovieData from "./components/MovieData";
 import data from "./WeatherData";
-import Weather from "./Weather";
+import Weather from "./components/Weather";
 import State from "./State";
-import Counter from "./Counter";
 
 class App extends React.Component {
   //========= STATE ================
@@ -17,10 +16,19 @@ class App extends React.Component {
   //=========  SORT HANDLERS ==========
 
   handleSortAz = () => {
-    console.log("clicked");
-    return this.setState({
-      movieBase: this.state.movieBase.sort(this.compare),
-    });
+    if (
+      {
+        movieBase: !this.state.movieBase.sort(this.compare),
+      }
+    ) {
+      return this.setState({
+        movieBase: this.state.movieBase,
+      });
+    } else {
+      return this.setState({
+        movieBase: this.state.movieBase.sort(this.compare),
+      });
+    }
   };
 
   handleSortZa = () => {
@@ -72,9 +80,6 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <div className="counterWrapper">
-          <Counter />
-        </div>
         <div className="state1Wrapper">
           <State />
         </div>
@@ -108,7 +113,9 @@ class App extends React.Component {
                 year={elt.year}
                 director={elt.director}
                 duration={elt.duration}
-                genre={elt.genre}
+                genre={elt.genre.map((e) => (
+                  <p>{e}</p>
+                ))}
                 rate={elt.rate}
               />
             ))}
