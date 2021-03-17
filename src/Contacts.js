@@ -122,7 +122,7 @@ class Contacts extends Component {
               imgUrl={elt.pictureUrl}
               popularity={elt.popularity}
               delete={() => {
-                return this.removeContact();
+                return this.removeContact(index);
               }}
             />
           ))}
