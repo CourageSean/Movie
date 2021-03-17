@@ -10,7 +10,8 @@ class Contacts extends Component {
     this.state = {
       name: "",
       contactData: data.slice(),
-
+      on: false,
+      rateSort: false,
       popularity: "",
     };
   }
@@ -62,23 +63,31 @@ class Contacts extends Component {
   };
 
   handleSortName = () => {
-    let order = false;
     const sortedName = this.state.contactData.sort(this.compare);
-    if (order) {
-      order = !order;
-      this.setState({ contactData: sortedName });
-    } else {
+    if (!this.state.on) {
+      this.setState({ contactData: sortedName, on: true });
+    }
+    if (this.state.on) {
       this.setState({
         contactData: sortedName.reverse(),
+        on: false,
       });
-      order = true;
     }
   };
 
   handleSortRate = () => {
-    return this.setState({
-      contactData: this.state.contactData.sort(this.compare).reverse(),
-    });
+    if (!this.state.rateSort) {
+      this.setState({
+        contactData: this.state.contactData.sort(this.compareRate),
+        rateSort: true,
+      });
+    }
+    if (this.state.rateSort) {
+      this.setState({
+        contactData: this.state.contactData.sort(this.compareRate).reverse(),
+        rateSort: false,
+      });
+    }
   };
   render() {
     return (
@@ -99,7 +108,11 @@ class Contacts extends Component {
           value="Add Random Contact"
           onClick={this.handleSubmit}
         />
-        <input type="submit" onClick={this.handleSortName} />
+        <input
+          type="submit"
+          onClick={this.handleSortName}
+          value="Sort by name"
+        />
         <button onClick={this.handleSortRate}>Sort by popularity</button>
 
         <div className="contacts-container">
